@@ -82,7 +82,7 @@ async function gest(url, data = {}) {
 
 function clear(element) {
     // element.textContent = "";
-    while(element.firstChild) {
+    while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
@@ -93,4 +93,11 @@ function uuid(n = 16, radix = 32) {
         token += Math.random().toString(radix).slice(2);
     }
     return token.slice(0, n);
-} 
+}
+
+function month_year() {
+    const date = new Date();
+    const month = `${date.getMonth() + 1}`;
+    const year = `${date.getFullYear()}`.slice(2);
+    return `${month < 10 ? `0${month}` : month}${year}`;
+}
