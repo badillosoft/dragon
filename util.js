@@ -1,3 +1,45 @@
+// House Hack Team
+// Alan Badillo Salas (badillo.soft@hotmail.com)
+// https://github.com/badillosoft
+// Derechos reservados (C) 2019
+
+// Util Project (util.js)
+// A Utilities for DOM
+
+async function request(url, data = null) {
+    // let html = localStorage.getItem(url);
+
+    // if (html) return html;
+    let options = null;
+
+    if (data) {
+        options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        };
+    }
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+        // console.warn(await response.text());
+        return "";
+    }
+
+    if (url[0] === "^") {
+        return await response.json();
+    }
+
+    html = await response.text();
+
+    // localStorage.setItem(url, html);
+
+    return html;
+}
+
 async function post(url, data = {}) {
     const response = await fetch(url, {
         method: "POST",
