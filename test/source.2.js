@@ -1,3 +1,3 @@
-source(document.currentScript, [
+source([
     "bundle.2.js",
 ]);

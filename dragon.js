@@ -139,7 +139,8 @@ async function install(source) {
     console.log(`installed ${source}`);
 }
 
-async function source(script, sources) {
+async function source(sources) {
+    const script = document.currentScript;
     console.log(`source ${script.dataset.src}`);
     await install(sources);
     dispatch(document, script.dataset.src);
