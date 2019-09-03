@@ -1,3 +1,11 @@
+// House Hack Team
+// Alan Badillo Salas (badillo.soft@hotmail.com)
+// https://github.com/badillosoft
+// Derechos reservados (C) 2019
+
+// Dragon Project (dragon.js)
+// A Prototype Microframework
+
 function prototype(name, model) {
     window.prototypes = window.prototypes || {};
     const base = window.prototypes[name] || (() => {});
