@@ -22,7 +22,7 @@ async function request(url, data = null) {
         };
     }
 
-    const response = await fetch(url, options);
+    const response = await fetch(url.replace(/^\^/, ""), options);
 
     if (!response.ok) {
         // console.warn(await response.text());
