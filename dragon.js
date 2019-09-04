@@ -73,6 +73,7 @@ function wrapper(script) {
     const wrapperDocument = {};
 
     for (let key in document) {
+        if (key === "currentScript") continue;
         if (typeof document[key] === "function") {
             wrapperDocument[key] = (...params) => document[key](...params);
             continue;
@@ -114,9 +115,9 @@ function view(element, html) {
     return element;
 }
 
-async function install(source) {
-    if (source instanceof Array) {
-        for (let src of source) {
+async function install($source) {
+    if ($source instanceof Array) {
+        for (let src of $source) {
             try {
                 await install(src);
             } catch (error) {
@@ -128,21 +129,25 @@ async function install(source) {
 
     const script = document.createElement("script");
 
-    const scriptContent = sessionStorage.getItem(`script://${source}`);
+    const scriptContent = sessionStorage.getItem(`script://${$source}`);
 
     if (scriptContent) {
-        script.dataset.src = source;
-        const wrapperDocument = wrapper(script);
-        new Function("document", scriptContent)(wrapperDocument);
+        script.dataset.src = $source;
+        document.body.appendChild(script);
+        new Function("document", `((document) => { 
+            ${source.toString()}
+
+            ${scriptContent} 
+        })(document)`)(wrapper(script));
         return;
     }
 
-    script.dataset.src = source;
+    script.dataset.src = $source;
 
     await new Promise((resolve, reject) => {
         listen(script, "load", resolve);
         listen(script, "error", reject);
-        script.src = source;
+        script.src = $source;
         document.body.appendChild(script);
     });
 
@@ -157,10 +162,10 @@ async function install(source) {
     }
 
     if (content) {
-        sessionStorage.setItem(`script://${source}`, content);
+        sessionStorage.setItem(`script://${$source}`, content);
     }
     
-    console.log(`installed ${source}`);
+    console.log(`installed ${$source}`);
 }
 
 async function source(sources) {
