@@ -37,8 +37,12 @@ function component(name, container = null) {
 
 function mount(target, element) {
     [...element.children].forEach(child => target.appendChild(child));
+    element.$parent = target;
     dispatch(element, "#mounted", target);
     dispatch(target, "#notify", element);
+    if (target.$parent) {
+        mount(target.$parent, target);
+    }
 }
 
 function select(element, selector, prototype = null) {
