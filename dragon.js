@@ -126,14 +126,16 @@ async function install(source) {
         return;
     }
 
-    let scriptContent = sessionStorage.getItem(`script://${source}`);
+    const script = document.createElement("script");
+
+    const scriptContent = sessionStorage.getItem(`script://${source}`);
 
     if (scriptContent) {
-        new Function(scriptContent)();
+        script.dataset.src = source;
+        const wrapperDocument = wrapper(script);
+        new Function("document", scriptContent)(wrapperDocument);
         return;
     }
-
-    const script = document.createElement("script");
 
     script.dataset.src = source;
 
@@ -145,6 +147,8 @@ async function install(source) {
     });
 
     let content = "";
+
+    console.log(script.src);
 
     try {
         content = await request(script.src);
