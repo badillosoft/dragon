@@ -126,7 +126,15 @@ async function install(source) {
         return;
     }
 
+    let scriptContent = sessionStorage.getItem(`script://${source}`);
+
+    if (scriptContent) {
+        new Function(scriptContent)();
+        return;
+    }
+
     const script = document.createElement("script");
+
     script.dataset.src = source;
 
     await new Promise((resolve, reject) => {
@@ -135,6 +143,18 @@ async function install(source) {
         script.src = source;
         document.body.appendChild(script);
     });
+
+    let content = "";
+
+    try {
+        content = await request(script.src);
+    } catch(error) {
+        console.warn(error);
+    }
+
+    if (content) {
+        sessionStorage.setItem(`script://${source}`, content);
+    }
     
     console.log(`installed ${source}`);
 }

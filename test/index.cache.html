@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dragon Test</title>
+</head>
+<body>
+    <script src="../dragon.js"></script>
+    <script src="../util.js"></script>
+
+    <script>
+        (async () => {
+            const span = document.createElement("span");
+
+            span.textContent = "Instalando componentes...";
+            
+            document.body.appendChild(span);
+
+            await install("bundle.1.js");
+            await install("bundle.2.js");
+
+            document.body.removeChild(span);
+
+            const button = component("button", document.body);
+            const image = component("image", document.body);
+        })();
+    </script>
+</body>
+</html>
