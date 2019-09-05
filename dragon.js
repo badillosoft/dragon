@@ -69,7 +69,8 @@ function listen(element, eventName, handler) {
 function transmit(source, eventNames, target) {
     eventNames = eventNames instanceof Array ? eventNames : [eventNames];
     for (let eventName of eventNames) {
-        listen(source, eventName, data => dispatch(target, eventName, data));
+        const [eventNameSource, eventNameTarget] = eventName.split(/\s*->\s*/);
+        listen(source, eventNameSource, data => dispatch(target, eventNameTarget || eventNameSource, data));
     }
 }
 
