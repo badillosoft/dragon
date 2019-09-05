@@ -6,6 +6,30 @@
 // Dragon Project (dragon.js)
 // A Prototype Microframework
 
+function gluer(source, name, target) {
+    const [_, basename, identifier] = name.match(/([^\(]+)((\([^\)]*\))?)/); 
+
+    console.log(basename, identifier);
+
+    window.glues = window.glues || {};
+    if (!window.glues[basename]) {
+        console.warn("invalid glue", basename);
+        return;
+    }
+    window.glues[basename](source, target, identifier);
+}
+
+function glue(name, model) {
+    window.glues = window.glues || {};
+    window.glues[name] = model
+    return window.glues[name];
+}
+
+function prototyper(element, name) {
+    window.prototypes = window.prototypes || {};
+    window.prototypes[name](element);
+}
+
 function prototype(name, model) {
     window.prototypes = window.prototypes || {};
     const base = window.prototypes[name] || (() => {});
