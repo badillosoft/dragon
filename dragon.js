@@ -39,6 +39,19 @@ function prototype(name, model) {
     return window.prototypes[name];
 }
 
+function inline(model, container = null) {
+    const parent = document.createElement("div");
+    parent.dataset.name = name;
+
+    model(parent);
+
+    if (container instanceof HTMLElement) {
+        mount(container, parent);
+    }
+
+    return parent;
+}
+
 function component(name, container = null) {
     window.prototypes = window.prototypes || {};
     
