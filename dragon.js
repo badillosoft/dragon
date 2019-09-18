@@ -43,7 +43,7 @@ function inline(model, container = null) {
     const parent = document.createElement("div");
     parent.dataset.name = name;
 
-    model(parent);
+    if (typeof model === "function") model(parent);
 
     if (container instanceof HTMLElement) {
         mount(container, parent);
