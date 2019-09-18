@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dragon View</title>
+</head>
+<body>
+    <script src="../dragon.js"></script>
+    <script>
+        const container = document.createElement("div");
+        const button = view(container, `<button>hello</button>`);
+        listen(button, "click", () => {
+            alert(button.textContent);
+        });
+        mount(document.body, container);
+    </script>
+</body>
+</html>

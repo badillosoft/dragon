@@ -154,7 +154,7 @@ function view(element, html) {
             element
         );
     });
-    return element;
+    return element.firstElementChild;
 }
 
 async function install($source) {
