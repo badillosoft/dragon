@@ -159,7 +159,6 @@ function uuid(n = 16, radix = 32) {
 
 function namespace(name) {
     const parts = name.split(".");
-    console.log("[dragon.js namespace]", name, parts);
     let root = window;
     for (let part of parts) {
         if (root[part]) continue;
