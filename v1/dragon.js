@@ -53,11 +53,11 @@ function view(parent, html, pusher = append) {
 
 function mount(container, parent, pusher = append) {
     pusher(container, parent);
-    if (container.$parent) mount(container.$parent, container);
+    // if (container.$parent) mount(container.$parent, container);
 }
 
 function unmount(container, parent, unpusher = remove) {
-    if (container.$parent) unmount(container.$parent, container);
+    // if (container.$parent) unmount(container.$parent, container);
     unpusher(container, parent);
 }
 
