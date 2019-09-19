@@ -156,3 +156,12 @@ function uuid(n = 16, radix = 32) {
     }
     return token.slice(0, n);
 }
+
+function namespace(name) {
+    const parts = name.split(".");
+    let root = window;
+    for (let part of parts) {
+        if (root[part]) continue;
+        root = root[part] = {};
+    }
+};
