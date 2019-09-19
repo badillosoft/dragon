@@ -161,7 +161,6 @@ function namespace(name) {
     const parts = name.split(".");
     let root = window;
     for (let part of parts) {
-        if (root[part]) continue;
-        root = root[part] = {};
+        root = root[part] = root[part] || {};
     }
 };
