@@ -132,14 +132,14 @@ function merge(origin, partial) {
 }
 
 function assign(origin, partial) {
-    if (classOf(origin) !== "Object") {
-        console.warn("[dragon.js assing] invalid origin", origin);
-        return;
-    }
-    if (classOf(partial) !== "Object") {
-        console.warn("[dragon.js assing] invalid partial", partial);
-        return;
-    }
+    // if (classOf(origin) !== "Object") {
+    //     console.warn("[dragon.js assing] invalid origin", origin);
+    //     return;
+    // }
+    // if (classOf(partial) !== "Object") {
+    //     console.warn("[dragon.js assing] invalid partial", partial);
+    //     return;
+    // }
     for (let [key, value] of Object.entries(partial)) origin[key] = value;
 }
 
