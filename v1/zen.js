@@ -93,7 +93,7 @@ function component(builder) {
 
         if (container) zen(container).appendChild(control);
 
-        control.fire.update = state;
+        control.fire.update = control.state;
 
         return control;
     };
