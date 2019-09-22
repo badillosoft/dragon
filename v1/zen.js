@@ -23,7 +23,7 @@ function zen(node) {
 
     node.def = new Proxy(node.state, {
         get(state, name) {
-            return node.defs[name].replace(/@:[\w-_.]+/g, w => {
+            return (node.defs[name] || "").trim().replace(/@:[\w-_.]+/g, w => {
                 return state[w.replace("@:", "")];
             });
         }
