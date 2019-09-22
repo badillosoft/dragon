@@ -3,8 +3,6 @@
  * Author: Alan Badillo Salas (badillo.soft@hotmail.com)
  * Github: https://github.com/badillosoft
  * 
- * Derechos reservados (C) 2019
- * 
  * Microframework DOM Library
  * version 1.0
  * 

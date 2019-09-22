@@ -1,7 +1,6 @@
 // House Hack Team
 // Alan Badillo Salas (badillo.soft@hotmail.com)
 // https://github.com/badillosoft
-// Derechos reservados (C) 2019
 
 // Util Project (util.js)
 // A Utilities for DOM
