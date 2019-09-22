@@ -1,5 +1,4 @@
 namespace("dom");
-namespace("dom.addons");
 
 dom.table = component(state => {
     const table = inline(`
