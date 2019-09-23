@@ -190,13 +190,13 @@ dom.inputField = component(state => {
         set(value) {
             if (value) header.hidden = false;
             inputField.dataset.label = value;
-            label.textContent = value;
+            label.innerHTML = value;
         }
     };
 
     inputField.property.buttonLabel = {
         get() { return button.textContent },
-        set(value) { button.textContent = value }
+        set(value) { button.innerHTML = value }
     };
     inputField.property.buttonDisabled = {
         get() { return button.disabled },
@@ -228,7 +228,7 @@ dom.inputField = component(state => {
             const text = inputField.dataset.label;
             const message = inputField.defs[status];
             if (message) return label.innerHTML = `${text} ${message}`;
-            label.textContent = text;
+            label.innerHTML = text;
         }
     };
 
