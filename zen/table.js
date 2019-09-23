@@ -48,7 +48,7 @@ dom.table = component(state => {
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <div class="d-flex align-items-end mb-2">
                         <label data-def="pageSizeLabel" class="label text-nowrap mr-2">Page Size</label>
                         <select data-rel="pageSizeSelect" class="custom-select">
@@ -59,8 +59,7 @@ dom.table = component(state => {
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-md-4"></div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <div class="d-flex align-items-end mb-2">
                         <label data-def="searchLabel" class="label mr-2">Search</label>
                         <input data-rel="searchInput" class="form-control" type="search">
