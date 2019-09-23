@@ -181,6 +181,7 @@ dom.table = component(state => {
                 table.state.addRow(row, rowData);
             }
             table.state.page = 0;
+            // table.fire.row = table.state.records;
         }
     };
 
@@ -208,6 +209,7 @@ dom.table = component(state => {
         table.state.totalRecords = table.state.records.length;
         table.state.currentTotalRecords = table.state.currentRecords.length;
         table.state.pageSize = table.state.currentPageSize || 10;
+        table.fire.row = { row, data };
     };
     table.property.pageSize = {
         get() { return table.state.currentPageSize },
@@ -237,7 +239,6 @@ dom.table = component(state => {
         get() { return table.state.currentPage - 1 },
         set(page) {
             if (!table.state.currentRecords) return;
-            if (table.state.currentPage !== page + 1) table.fire.pageChange = page;
             if (table.state.currentRecords.length === 0) {
                 clear(body);
                 const emptyRow = inline(`
@@ -319,7 +320,7 @@ dom.table = component(state => {
             table.ref._rel.buttons.hidden = value;
         }
     };
-    
+
     table.bind.update$table = currentState => {
         searchLabel.innerHTML = table.defs.search;
         pageSizeLabel.innerHTML = table.defs.pageSize;
