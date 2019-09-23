@@ -139,9 +139,13 @@ dom.table = component(state => {
     table.property.rows = {
         set(rows) {
             if (rows.length === 0) {
-                rows.push({
-                    [table.def.emptyColumn]: table.def.emptyRow
-                });
+                table.state.columns = [table.def.emptyColumn];
+                clear(body);
+                const emptyRow = inline(`
+                    <tr class="text-center"><td>${table.def.emptyRow}</td><tr>
+                `);
+                body.append(emptyRow);
+                return;
             }
             const columns = rows.reduce((columns, row) => {
                 for (let columnName in row) if (columns.indexOf(columnName) < 0) columns.push(columnName);
