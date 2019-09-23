@@ -137,9 +137,6 @@ dom.table = component(state => {
         }
     };
 
-    table.defs.emptyColumn = "-";
-    table.defs.emptyRow = "Table is empty";
-
     table.property.rows = {
         set(rows) {
             if (rows.length === 0) {
@@ -191,6 +188,8 @@ dom.table = component(state => {
     table.defs.page = "Page <strong>@:currentPage</strong> of <strong>@:pageCount</strong>";
     table.defs.pageSize = "Page Size";
     table.defs.search = "Search";
+    table.defs.emptyColumn = "-";
+    table.defs.emptyRow = "Table is empty";
 
     table.state.addRow = (row, data) => {
         const index = table.state.records.length;
@@ -302,9 +301,8 @@ dom.table = component(state => {
     table.bind.update$table = currentState => {
         searchLabel.textContent = table.defs.search;
         pageSizeLabel.textContent = table.defs.pageSize;
+        table.state.rows = table.state.records;
     };
-
-    table.state.rows = [];
 
     return table;
 });
