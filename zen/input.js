@@ -72,7 +72,9 @@ dom.addons.inputFieldText = inputField => {
     inputField.bind.text = async text => {
         if (inputField.supress.inputFieldText) return;
         if (!inputField.state.validate) return;
+        // if (inputField.state.status === "confirm") return;
         const isValid = await inputField.state.validate(text);
+        // console.log("isValid", isValid);
         inputField.state.buttonDisabled = !isValid;
     };
 };
@@ -81,24 +83,25 @@ dom.addons.inputFieldAccept = inputField => {
     inputField.bind.accept = async text => {
         if (inputField.supress.inputFieldAccept) return;
         if (!inputField.state.confirm) return;
-        const isButtonDisabled = inputField.state.buttonDisabled;
-        const isInputDisabled = inputField.state.inputDisabled;
+        // const isButtonDisabled = inputField.state.buttonDisabled;
+        // const isInputDisabled = inputField.state.inputDisabled;
         inputField.state.inputDisabled = true;
         inputField.state.buttonDisabled = true;
         inputField.state.status = "confirm:before";
         const isConfirmed = await inputField.state.confirm(text);
         inputField.state.status = "confirm:after";
-        inputField.state.inputDisabled = isInputDisabled;
-        inputField.state.buttonDisabled = isButtonDisabled;
+        // inputField.state.inputDisabled = isInputDisabled;
+        // inputField.state.buttonDisabled = isButtonDisabled;
         if (!isConfirmed) {
             inputField.state.status = "unconfirm";
             inputField.fire.unconfirm = text;
             return;
         }
-        inputField.state.inputDisabled = true;
-        inputField.state.buttonDisabled = true;
         inputField.state.status = "confirm";
         inputField.fire.confirm = text;
+        inputField.state.inputDisabled = true;
+        inputField.state.buttonDisabled = true;
+        // console.log("confirmado");
     };
 };
 
@@ -107,10 +110,10 @@ dom.addons.inputFieldDefaultState = inputField => {
         inputField.dataset.text = text;
         return true;
     };
-    inputField.state.validate = text => { 
-        return inputField.list ? 
-            inputField.state.status !== "confirm" && !!inputField.state.selectedItem : 
-            !!text;
+    inputField.state.validate = text => {
+        // console.log("validando", text, inputField.state.currentList);
+        if (inputField.state.status === "confirm") return false;
+        return inputField.state.currentList ? inputField.state.selectedItem : !!text;
     };
     inputField.defs = {
         "confirm:before": `<span class="text-warning"><i class="fas fa-chevron-circle-right"></i></span>`,
@@ -154,8 +157,8 @@ dom.inputField = component(state => {
     button.bind.click$inputField = () => { inputField.fire.accept = input.value };
     input.bind.enter$inputField = () => {
         if (!button.disabled) {
-            inputField.state.buttonDisabled = true;
             inputField.fire.accept = input.value;
+            inputField.state.buttonDisabled = true;
         }
     };
 
@@ -197,7 +200,10 @@ dom.inputField = component(state => {
     };
     inputField.property.buttonDisabled = {
         get() { return button.disabled },
-        set(value) { button.disabled = value }
+        set(value) {
+            // console.log("button", value);
+            button.disabled = value;
+        }
     };
 
     inputField.property.text = {
@@ -218,6 +224,7 @@ dom.inputField = component(state => {
 
     inputField.property.status = {
         set(status) {
+            if (status === "confirm") input.buttonDisabled = true;
             const text = inputField.dataset.label;
             const message = inputField.defs[status];
             if (message) return label.innerHTML = `${text} ${message}`;

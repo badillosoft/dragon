@@ -66,6 +66,46 @@
             alert(`Elemento "${text}" seleccionado`);
         };
     </script>
+
+    <script src="http://189.213.198.6:5001/hidra.js"></script>
+
+    <script>
+        {
+            const node = hidra();
+
+            const page = inline(`
+                <div></div>
+            `);
+
+            const programaInput = dom.inputField(page, {
+                label: "Programa",
+                placeholder: "Seleccionar Programa",
+            });
+            const partidaInput = dom.inputField(page, {
+                inputDisabled: true,
+                label: "Partida",
+                placeholder: "Seleccionar Partida",
+            });
+
+            programaInput.bind.confirm = async programa => {
+                partidaInput.state.inputDisabled = false;
+                const partidas = await node("@api.dif.partidas", { programa });
+                console.log(partidas);
+                partidaInput.state.list = partidas.reduce((partidas, frame) => {
+                    partidas[frame.partida] = frame.title;
+                    return partidas;
+                }, {});
+            };
+
+            (async () => {
+                const programas = await node("@api.dif.programas", {});
+                console.log(programas);
+                programaInput.state.list = programas;
+            })();
+
+            document.body.append(page);
+        }
+    </script>
 </body>
 
 </html>
