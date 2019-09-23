@@ -50,6 +50,9 @@
                 page: "Página <strong>@:currentPage</strong> de <strong>@:pageCount</strong>",
             }
         });
+
+        table.bind.pageChange = page => console.log("page", page);
+
         table.state.rows = "-".repeat(200).split("").map((_, index) => {
             return {
                 "#": index + 1,

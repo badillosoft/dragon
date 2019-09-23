@@ -186,7 +186,7 @@ dom.table = component(state => {
 
     table.state.records = [];
     table.state.currentTotalRecords = 0;
-    table.state.currentPage = 1;
+    table.state.currentPage = 0;
 
     table.defs.total = "Showing <strong>@:pageSize</strong> of <strong>@:currentTotalRecords</strong>";
     table.defs.page = "Page <strong>@:currentPage</strong> of <strong>@:pageCount</strong>";
@@ -236,8 +236,8 @@ dom.table = component(state => {
     table.property.page = {
         get() { return table.state.currentPage - 1 },
         set(page) {
-            table.fire.page = page;
             if (!table.state.currentRecords) return;
+            if (table.state.currentPage !== page + 1) table.fire.pageChange = page;
             if (table.state.currentRecords.length === 0) {
                 clear(body);
                 const emptyRow = inline(`
