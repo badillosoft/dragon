@@ -310,7 +310,7 @@ dom.table = component(state => {
 
     table.property.title = {
         get() { return title.textContent },
-        set(value) { title.textContent = value }
+        set(value) { title.innerHTML = value }
     };
 
     table.property.hideButtons = {
