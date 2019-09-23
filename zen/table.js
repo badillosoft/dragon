@@ -182,6 +182,7 @@ dom.table = component(state => {
             }
             table.state.page = 0;
             // table.fire.row = table.state.records;
+            table.fire.row = { };
         }
     };
 
@@ -287,6 +288,7 @@ dom.table = component(state => {
                 if (pageIndicator.dataset.page === `${page}`) pageIndicator.classList.add("active");
                 paginator.append(pageIndicator);
             }
+            table.fire.row = { };
         }
     };
     table.property.search = {
@@ -305,6 +307,7 @@ dom.table = component(state => {
             });
             table.state.pageSize = table.state.currentPageSize;
             table.state.page = 0;
+            table.fire.row = { };
         },
     };
 
