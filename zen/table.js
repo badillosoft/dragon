@@ -236,8 +236,8 @@ dom.table = component(state => {
     table.property.page = {
         get() { return table.state.currentPage - 1 },
         set(page) {
-            if (!table.state.currentRecords) return;
             table.fire.page = page;
+            if (!table.state.currentRecords) return;
             if (table.state.currentRecords.length === 0) {
                 clear(body);
                 const emptyRow = inline(`
