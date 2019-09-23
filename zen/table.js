@@ -136,8 +136,17 @@ dom.table = component(state => {
             }
         }
     };
+
+    table.defs.emptyColumn = "-";
+    table.defs.emptyRow = "Table is empty";
+
     table.property.rows = {
         set(rows) {
+            if (rows.length === 0) {
+                rows.push({
+                    [table.def.emptyColumn]: table.def.emptyRow
+                });
+            }
             const columns = rows.reduce((columns, row) => {
                 for (let columnName in row) if (columns.indexOf(columnName) < 0) columns.push(columnName);
                 return columns;
@@ -294,6 +303,8 @@ dom.table = component(state => {
         searchLabel.textContent = table.defs.search;
         pageSizeLabel.textContent = table.defs.pageSize;
     };
+
+    table.state.rows = [];
 
     return table;
 });
