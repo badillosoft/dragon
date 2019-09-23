@@ -186,13 +186,15 @@ dom.table = component(state => {
 
     table.state.records = [];
     table.state.currentTotalRecords = 0;
+    table.state.currentPage = 1;
 
     table.defs.total = "Showing <strong>@:pageSize</strong> of <strong>@:currentTotalRecords</strong>";
     table.defs.page = "Page <strong>@:currentPage</strong> of <strong>@:pageCount</strong>";
     table.defs.pageSize = "Page Size";
     table.defs.search = "Search";
-    table.defs.emptyColumn = "-";
+    table.defs.emptyColumn = "Not columns";
     table.defs.emptyRow = "Table is empty";
+    table.defs.emptySearch = "Not search results";
 
     table.state.addRow = (row, data) => {
         const index = table.state.records.length;
@@ -235,6 +237,16 @@ dom.table = component(state => {
         get() { return table.state.currentPage - 1 },
         set(page) {
             if (!table.state.currentRecords) return;
+            if (table.state.currentRecords.length === 0) {
+                clear(body);
+                const emptyRow = inline(`
+                    <tr class="text-center">
+                        <td colspan="${table.state.columns.length}">${table.def.emptySearch}</td>
+                    <tr>
+                `);
+                body.append(emptyRow);
+                return;
+            }
             const pageCount = table.state.pageCount;
             const pageSize = table.state.currentPageSize;
             table.state.currentPage = page + 1;
@@ -302,8 +314,10 @@ dom.table = component(state => {
     };
     
     table.bind.update$table = currentState => {
-        searchLabel.textContent = table.defs.search;
-        pageSizeLabel.textContent = table.defs.pageSize;
+        searchLabel.innerHTML = table.defs.search;
+        pageSizeLabel.innerHTML = table.defs.pageSize;
+        pageTotalLabel.innerHTML = table.def.total;
+        pageCurrentLabel.innerHTML = table.def.page;
         table.state.rows = table.state.records;
     };
 

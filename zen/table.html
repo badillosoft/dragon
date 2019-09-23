@@ -49,13 +49,13 @@
                 page: "Página <strong>@:currentPage</strong> de <strong>@:pageCount</strong>",
             }
         });
-        // table.state.rows = "-".repeat(200).split("").map((_, index) => {
-        //     return {
-        //         "#": index + 1,
-        //         "A": Number(Math.random().toFixed(2)),
-        //         "B": Number(Math.random().toFixed(2)),
-        //     };
-        // });
+        table.state.rows = "-".repeat(200).split("").map((_, index) => {
+            return {
+                "#": index + 1,
+                "A": Number(Math.random().toFixed(2)),
+                "B": Number(Math.random().toFixed(2)),
+            };
+        });
     </script>
 </body>
 
