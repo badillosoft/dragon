@@ -176,6 +176,7 @@ dom.table = component(state => {
     };
 
     table.state.records = [];
+    table.state.currentTotalRecords = 0;
 
     table.defs.total = "Showing <strong>@:pageSize</strong> of <strong>@:currentTotalRecords</strong>";
     table.defs.page = "Page <strong>@:currentPage</strong> of <strong>@:pageCount</strong>";
