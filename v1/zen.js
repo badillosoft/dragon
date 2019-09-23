@@ -60,7 +60,7 @@ function zen(node) {
                 get(_, name) { return target.ref[`[data${selector.replace(/_/g, "-")}="${name}"]`] },
                 set(_, name, element) { target.ref[`[data${selector.replace(/_/g, "-")}="${name}"]`] = element }
             });
-            selector = selector.replace(/\$[\w_]+/g, w => w.replace("$", ".").replace("_", "-").toLowerCase());
+            selector = selector.replace(/\$[\w_]+/g, w => w.replace("$", ".").replace(/_/g, "-").toLowerCase());
             return zen(target.querySelector(selector)) || console.warn(
                 `[zen.js error] selector (${selector}) not found`
             );
