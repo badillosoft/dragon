@@ -37,7 +37,7 @@ dom.table = component(state => {
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-center mb-2">
-                        <div class="btn-group">
+                        <div data-rel="buttons" class="btn-group">
                             <button data-btn="copy" class="btn btn-primary">COPY</button>
                             <button data-btn="csv" class="btn btn-primary">CSV</button>
                             <button data-btn="excel" class="btn btn-primary">EXCEL</button>
@@ -311,6 +311,12 @@ dom.table = component(state => {
     table.property.title = {
         get() { return title.textContent },
         set(value) { title.textContent = value }
+    };
+
+    table.property.hideButtons = {
+        set(value) {
+            table.ref._rel.buttons.hidden = value;
+        }
     };
     
     table.bind.update$table = currentState => {
