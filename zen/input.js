@@ -70,7 +70,7 @@ dom.input = component(state => {
 
 dom.addons.inputFieldText = inputField => {
     inputField.bind.text = async text => {
-        if(inputField.supress.inputFieldText) return;
+        if (inputField.supress.inputFieldText) return;
         if (!inputField.state.validate) return;
         const isValid = await inputField.state.validate(text);
         inputField.state.buttonDisabled = !isValid;
@@ -79,7 +79,7 @@ dom.addons.inputFieldText = inputField => {
 
 dom.addons.inputFieldAccept = inputField => {
     inputField.bind.accept = async text => {
-        if(inputField.supress.inputFieldAccept) return;
+        if (inputField.supress.inputFieldAccept) return;
         if (!inputField.state.confirm) return;
         const isButtonDisabled = inputField.state.buttonDisabled;
         const isInputDisabled = inputField.state.inputDisabled;
@@ -140,7 +140,7 @@ dom.inputField = component(state => {
     const datalist = inputField.ref.datalist;
 
     const input = inputField.ref.input = dom.input(null, state.input);
-    
+
     datalist.id = uuid();
     input.setAttribute("list", datalist.id);
 
@@ -148,13 +148,16 @@ dom.inputField = component(state => {
     label.setAttribute("for", input.id);
 
     button.bind.click$inputField = () => { inputField.fire.accept = input.value };
-    input.bind.enter$inputField = () => { if (!button.disabled) inputField.fire.accept = input.value };
+    input.bind.enter$inputField = () => {
+        inputField.state.buttonDisabled = true;
+        if (!button.disabled) inputField.fire.accept = input.value;
+    };
 
-    input.bind.keydown$inputField = () => { 
+    input.bind.keydown$inputField = () => {
         inputField.state.selectedItem = "";
         inputField.fire.text = uuid();
     };
-    input.bind.escape$inputField = () => { 
+    input.bind.escape$inputField = () => {
         inputField.state.selectedItem = "";
         inputField.fire.text = uuid();
     };
@@ -173,36 +176,36 @@ dom.inputField = component(state => {
 
     dom.addons.inputFieldDefaultState(inputField);
 
-    inputField.property.label = { 
+    inputField.property.label = {
         get() { return label.textContent },
-        set(value) { 
+        set(value) {
             if (value) header.hidden = false;
             inputField.dataset.label = value;
             label.textContent = value;
         }
     };
 
-    inputField.property.buttonLabel = { 
+    inputField.property.buttonLabel = {
         get() { return button.textContent },
         set(value) { button.textContent = value }
     };
-    inputField.property.buttonDisabled = { 
+    inputField.property.buttonDisabled = {
         get() { return button.disabled },
         set(value) { button.disabled = value }
     };
-    
-    inputField.property.text = { 
+
+    inputField.property.text = {
         get() { return input.value },
-        set(value) { 
+        set(value) {
             input.value = value;
             inputField.fire.text = value;
         }
     };
-    inputField.property.placeholder = { 
+    inputField.property.placeholder = {
         get() { return input.placeholder },
         set(value) { input.placeholder = value }
     };
-    inputField.property.inputDisabled = { 
+    inputField.property.inputDisabled = {
         get() { return input.disabled },
         set(value) { input.disabled = value }
     };
