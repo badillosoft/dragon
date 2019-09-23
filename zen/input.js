@@ -149,8 +149,10 @@ dom.inputField = component(state => {
 
     button.bind.click$inputField = () => { inputField.fire.accept = input.value };
     input.bind.enter$inputField = () => {
-        // inputField.state.buttonDisabled = true;
-        if (!button.disabled) inputField.fire.accept = input.value;
+        if (!button.disabled) {
+            inputField.state.buttonDisabled = true;
+            inputField.fire.accept = input.value;
+        }
     };
 
     input.bind.keydown$inputField = () => {
