@@ -77,8 +77,17 @@
                 <div></div>
             `);
 
+            const fechaInput = dom.inputField(page, {
+                label: "Fecha de Requisición",
+                placeholder: "Fecha",
+                buttonLabel: `<i class="fas fa-calendar"></i>`,
+            });
+
+            fechaInput.ref.input.type = "date";
+
             const programaInput = dom.inputField(page, {
                 label: "Programa",
+                buttonLabel: `<i class="fas fa-cube">`,
                 placeholder: "Seleccionar Programa",
             });
             const partidaInput = dom.inputField(page, {

@@ -175,6 +175,7 @@ dom.inputField = component(state => {
         span.hidden = false;
         inputField.fire.typingStart = event;
     };
+    input.bind.change$inputField = () => { inputField.fire.text = input.value };
     input.bind.typingEnd = event => {
         span.hidden = true;
         inputField.fire.typingEnd = event;
