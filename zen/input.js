@@ -107,7 +107,7 @@ dom.addons.inputFieldDefaultState = inputField => {
         inputField.dataset.text = text;
         return true;
     };
-    inputField.state.validate = text => { return input.list ? !!input.state.selectedItem : !!text };
+    inputField.state.validate = text => { return inputField.list ? !!inputField.state.selectedItem : !!text };
     inputField.defs = {
         "confirm:before": `<span class="text-warning"><i class="fas fa-chevron-circle-right"></i></span>`,
         "confirm:after": "",
