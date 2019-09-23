@@ -224,7 +224,7 @@ dom.inputField = component(state => {
 
     inputField.property.status = {
         set(status) {
-            if (status === "confirm") input.buttonDisabled = true;
+            if (status === "confirm") return input.buttonDisabled = true;
             const text = inputField.dataset.label;
             const message = inputField.defs[status];
             if (message) return label.innerHTML = `${text} ${message}`;
