@@ -137,8 +137,12 @@ dom.inputField = component(state => {
     const label = inputField.ref.label;
     const span = inputField.ref.span;
     const button = inputField.ref.button;
+    const datalist = inputField.ref.datalist;
 
     const input = inputField.ref.input = dom.input(null, state.input);
+    
+    datalist.id = uuid();
+    input.setAttribute("list", datalist.id);
 
     input.id = uuid();
     label.setAttribute("for", input.id);
@@ -146,6 +150,14 @@ dom.inputField = component(state => {
     button.bind.click$inputField = () => { inputField.fire.accept = input.value };
     input.bind.enter$inputField = () => { if (!button.disabled) inputField.fire.accept = input.value };
 
+    input.bind.keydown$inputField = () => { 
+        inputField.state.selectedItem = "";
+        inputField.fire.text = uuid();
+    };
+    input.bind.escape$inputField = () => { 
+        inputField.state.selectedItem = "";
+        inputField.fire.text = uuid();
+    };
     input.bind.keyup$inputField = () => { inputField.fire.text = input.value };
     input.bind.typingStart = event => {
         span.hidden = false;
@@ -201,6 +213,50 @@ dom.inputField = component(state => {
             const message = inputField.defs[status];
             if (message) return label.innerHTML = `${text} ${message}`;
             label.textContent = text;
+        }
+    };
+
+    inputField.property.list = {
+        set(list) {
+            if (!list) return;
+            inputField.state.currentList = list;
+            clear(datalist);
+            if (list instanceof Array) {
+                for (let item of list) {
+                    let option = inline(`<option>${item}</option>`);
+                    datalist.append(option);
+                }
+                return;
+            }
+            for (let [key, value] of Object.entries(list)) {
+                let option = inline(`<option value="${key}">${value}</option>`);
+                datalist.append(option);
+            }
+        }
+    };
+
+    input.bind.change$inputField = () => {
+        inputField.state.selectedItem = "";
+        inputField.fire.text = uuid();
+        if (!inputField.state.currentList) return;
+        const value = input.value;
+        const list = inputField.state.currentList;
+        if (list instanceof Array) {
+            for (let item of list) {
+                if (`${item}` === value) {
+                    inputField.state.selectedItem = item;
+                    inputField.fire.item = item;
+                    inputField.fire.text = item;
+                }
+            }
+            return;
+        }
+        for (let [key, item] of Object.entries(list)) {
+            if (`${key}` === value) {
+                inputField.state.selectedItem = item;
+                inputField.fire.item = key;
+                inputField.fire.text = key;
+            }
         }
     };
 

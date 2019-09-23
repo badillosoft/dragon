@@ -44,7 +44,14 @@
             label: "Campo de texto",
             placeholder: "Escribe aquí",
             buttonLabel: "confirmar",
-            confirm(text) { return text === "hola" }
+            // list: ["A", "B", "C"],
+            list: {
+                a: "A",
+                b: "B",
+                c: "C",
+            },
+            // confirm(text) { return text === "hola" },
+            validate(text) { return input.state.selectedItem },
         });
 
         input.bind.confirm = text => {
@@ -53,6 +60,10 @@
 
         input.bind.unconfirm = text => {
             alert(`Texto "${text}" no confirmado. Escribe el texto "hola"`);
+        };
+
+        input.bind.item = text => {
+            alert(`Elemento "${text}" seleccionado`);
         };
     </script>
 </body>
