@@ -97,8 +97,8 @@ dom.addons.inputFieldAccept = inputField => {
         }
         inputField.state.inputDisabled = true;
         inputField.state.buttonDisabled = true;
-        inputField.fire.confirm = text;
         inputField.state.status = "confirm";
+        inputField.fire.confirm = text;
     };
 };
 
