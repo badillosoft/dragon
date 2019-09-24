@@ -130,4 +130,12 @@ function namespace(name) {
     for (let part of parts) {
         root = root[part] = root[part] || {};
     }
-};
+}
+
+function assign(source, target) {
+    Object.entries(source).forEach(([key, value]) => target[key] = value);
+}
+
+function define(state, initialState) {
+    Object.entries(initialState).forEach(([key, value]) => state[key] = value);
+}
