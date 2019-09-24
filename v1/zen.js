@@ -139,6 +139,7 @@ function namespace(name) {
     for (let part of parts) {
         root = root[part] = root[part] || {};
     }
+    return parts;
 }
 
 function assign(source, target) {
