@@ -54,9 +54,15 @@
             validate(text) { return input.state.selectedItem },
         });
 
+        input.bind.foo = function (text) {
+            console.log("foo", text, this);
+        };
+
+        input.fire.foo = "hello";
+
         console.log(input.property);
         input.property.text = {};
-        input.property.text = { get() {} };
+        input.property.text = { get() { } };
 
         input.bind.confirm = text => {
             alert(`Texto "${text}" confirmado`);

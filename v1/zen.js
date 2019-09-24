@@ -44,7 +44,7 @@ function zen(node) {
             const eventName = channel.replace(/\$.*/, "");
             if (target.bindings[channel]) target.removeEventListener(eventName, target.bindings[eventName]);
             target.bindings[channel] = event => {
-                handler(event instanceof CustomEvent ? event.detail : event);
+                handler.call(node, event instanceof CustomEvent ? event.detail : event);
             };
             target.addEventListener(eventName, target.bindings[channel]);
         },
