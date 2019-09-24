@@ -30,7 +30,10 @@ function zen(node) {
     });
 
     node.property = new Proxy(node.state, {
-        set(state, name, descriptor) { Object.defineProperty(state, name, descriptor) }
+        set(state, name, descriptor) { 
+            descriptor.configurable = true;
+            Object.defineProperty(state, name, descriptor)
+        }
     });
 
     node.bindings = node.bindings || {};
