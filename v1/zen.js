@@ -71,12 +71,18 @@ function zen(node) {
         set(target, selector, element) {
             if (!element) {
                 element = target.ref[selector];
-                if(element) element.parentNode.removeChild(element);
+                if(!element) return;
+                const parent = zen(element.parentNode);
+                zen(element).fire.remove = { target, parent };
+                element.parentNode.removeChild(element);
                 return;
             }
             const origin = target.ref[selector];
             if (!origin) return;
-            origin.parentNode.replaceChild(element, origin);
+            const parent = zen(origin.parentNode);
+            zen(origin).fire.remove = { target, parent };
+            parent.replaceChild(element, origin);
+            element.fire.mount = { target, parent };
         },
     });
     return node;
