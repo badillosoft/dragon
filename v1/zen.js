@@ -19,6 +19,9 @@ function zen(node) {
     node.supress = node.supress || {};
 
     node.state = node.state || {};
+
+    node.state.self = node;
+
     node.defs = node.defs || {};
 
     node.def = new Proxy(node.state, {

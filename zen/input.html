@@ -54,6 +54,12 @@
             validate(text) { return input.state.selectedItem },
         });
 
+        input.property.foo = {
+            get () { return this }
+        };
+
+        console.log("state.foo", input.state.foo);
+
         input.bind.foo = function (text) {
             console.log("foo", text, this);
         };
