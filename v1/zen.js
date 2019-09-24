@@ -12,6 +12,7 @@
 { window.dom = {} }
 { window.dom.addons = {} }
 { zen(document.body) }
+{ zen(document.head) }
 
 function zen(node) {
     if (!node) return;
