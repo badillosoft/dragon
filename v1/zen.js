@@ -92,26 +92,6 @@ function zen(node) {
     return node;
 }
 
-function component(builder) {
-    return (container = null, state = {}) => {
-        const control = builder(state);
-
-        for (let [key, value] of Object.entries(state)) {
-            if (key === "defs") {
-                Object.assign(control.defs, value);
-                continue;
-            }
-            control.state[key] = value;
-        }
-
-        if (container) zen(container).appendChild(control);
-
-        control.fire.update = control.state;
-
-        return control;
-    };
-}
-
 function inline(html) {
     const template = document.createElement("template");
     template.innerHTML = html.trim();
