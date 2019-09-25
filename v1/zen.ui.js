@@ -57,6 +57,11 @@ async function loadComponent(url, state = null) {
         zen(control);
     }
 
+    const initializeHandler = state.initialize;
+    const errorHandler = state.error;
+    delete state.initialize;
+    delete state.error;
+
     control.dataset.url = url;
 
     // let model = window;
@@ -152,11 +157,11 @@ async function loadComponent(url, state = null) {
 
     control.fire.initialize = control;
 
-    if (control.state.initialize) control.state.initialize(control);
+    if (initializeHandler) initializeHandler(control);
 
     if (control.dataset.error) {
         control.fire.error = control;
-        if (control.state.error) control.state.error(control);
+        if (errorHandler) errorHandler(control);
     }
 
     return control;
