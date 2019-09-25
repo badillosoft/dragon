@@ -60,8 +60,8 @@ async function loadComponent(url, state = null) {
 
     const initializeHandler = state.initialize;
     const errorHandler = state.error;
-    delete state.initialize;
-    delete state.error;
+    // delete state.initialize;
+    // delete state.error;
 
     control.dataset.url = url;
 
