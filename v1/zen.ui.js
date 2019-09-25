@@ -109,7 +109,7 @@ function component(base, name) {
     const id = `component-${uuid()}`;
 
     const container = inline(`
-        <div data-id="${id}">Cargando componente...<div>
+        <div data-id="${id}"><div>
     `);
 
     (async () => {
