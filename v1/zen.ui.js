@@ -134,6 +134,20 @@ async function loadComponent(url, state = null) {
         }
     });
 
+    control.querySelectorAll(`[data-control]`).forEach(element => {
+        const name = element.dataset.control;
+        let state = null;
+        if (element.dataset.state) {
+            state = control.state;
+            for (let key of element.dataset.state.split(".")) {
+                if (key === "*") continue;
+                state[key] = state[key] || {};
+                state = state[key];
+            }
+        }
+        control.ref._control[name] = component(name, state);
+    });
+
     control.fire.initialize = control;
 
     if (control.dataset.error) {
