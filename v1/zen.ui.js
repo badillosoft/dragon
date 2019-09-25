@@ -147,7 +147,7 @@ async function loadComponent(url, state = null) {
         }
         const _component = component(name, state);
         control.ref._control[name] = _component;
-        // _component.dataset.id = element.dataset.id;
+        _component.dataset.id = element.dataset.id;
     });
 
     control.fire.initialize = control;
@@ -163,7 +163,7 @@ function component(url, state = null) {
     const id = `component-${uuid()}`;
 
     const container = inline(`
-        <div data-id="${id}"><div>
+        <div data-component="${id}"><div>
     `);
 
     (async () => {
@@ -172,7 +172,7 @@ function component(url, state = null) {
         while (!container.parentElement) {
             await new Promise(resolve => setTimeout(() => {}, 100));
         }
-        zen(container.parentElement).ref.id[id] = control;
+        zen(container.parentElement).ref._component[id] = control;
         control.dataset.id = id;
         control.fire.didMount = control;
         control.fire.load = control;
