@@ -69,6 +69,8 @@ async function loadComponent(url, state = null) {
             const name = script.dataset.watch;
             const watcher = new Function("control", `
                 return ((control, { state, ref, def, bind, fire, watch }) => {
+                    ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
+
                     ${ 
                         [...control.querySelectorAll("[data-id]")]
                             .map(element => `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`)
@@ -94,6 +96,8 @@ async function loadComponent(url, state = null) {
                     const get = callback => property.get = callback;
                     const set = callback => property.set = callback;
 
+                    ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
+
                     ${ 
                         [...control.querySelectorAll("[data-id]")]
                             .map(element => `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`)
@@ -118,6 +122,8 @@ async function loadComponent(url, state = null) {
                 for (let name of script.dataset.bind.split(/\s+/)) {
                     let handler = new Function("control", "source", `
                         return (...params) => (({ state, ref, def, bind, fire, watch }, event, input, ...params) => {
+                            ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
+
                             ${ 
                                 [...control.querySelectorAll("[data-id]")]
                                     .map(element => 
