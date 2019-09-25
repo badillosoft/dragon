@@ -64,10 +64,27 @@ async function loadComponent(url, state = null) {
     // for (let part of parts) model = model[part];
 
     scripts.querySelectorAll("script").forEach(script => {
+        if (script.dataset.watch) {
+            const name = script.dataset.watch;
+            const watcher = new Function("control", `
+                return ((control, { state, ref, def, bind, fire, watch }) => {
+                    ${ 
+                        [...control.querySelectorAll("[data-id]")]
+                            .map(element => `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`)
+                            .join("\n")
+                    }
+
+                    return (${name}) => {
+                        ${script.textContent}
+                    };
+                })(control, control);
+            `)(control);
+            control.watcher[name] = watcher;
+        }
         if (script.dataset.property) {
             const name = script.dataset.property;
             const descriptor = new Function("control", `
-                return ((control, { state, ref, def, bind, fire }) => {
+                return ((control, { state, ref, def, bind, fire, watch }) => {
                     const property = { 
                         get() { console.warn("deprecated set") }, 
                         set(value) { console.warn("deprecated set") } 
@@ -99,7 +116,7 @@ async function loadComponent(url, state = null) {
             for (let source of sources) {
                 for (let name of script.dataset.bind.split(/\s+/)) {
                     let handler = new Function("control", "source", `
-                        return (...params) => (({ state, ref, def, bind, fire }, event, input, ...params) => {
+                        return (...params) => (({ state, ref, def, bind, fire, watch }, event, input, ...params) => {
                             ${ 
                                 [...control.querySelectorAll("[data-id]")]
                                     .map(element => 

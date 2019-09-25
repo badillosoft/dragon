@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>zen.ui.js test watch</title>
+</head>
+<body>
+    <script src="../v1/zen.js"></script>
+    <script src="../v1/zen.ui.js"></script>
+
+    <!-- <script>
+        const comp1 = inline(`<input>`);
+
+        comp1.watcher.text = (text) => {
+            console.log("watch text", text, comp1.state.text);
+        };
+
+        comp1.bind.keyup = () => {
+            comp1.watch.text = comp1.value;
+        };
+
+        document.body.append(comp1);
+    </script> -->
+    <script>
+        const state = {};
+
+        const comp2 = inline(`<span>Hola</span>`, state);
+        comp2.state = state;
+        zen(comp2);
+
+        comp2.watcher.text = (text) => {
+            comp2.innerHTML = text;
+        };
+
+        const comp1 = inline(`<input>`, state);
+        comp1.state = state;
+        zen(comp1);
+
+        comp1.watcher.text = (text) => {
+            console.log("watch text", text, comp1.state.text);
+        };
+        
+        comp1.bind.keyup = () => {
+            comp1.watch.text = comp1.value;
+        };
+
+        document.body.append(comp1);
+        document.body.append(comp2);
+    </script>
+</body>
+</html>

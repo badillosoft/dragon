@@ -23,6 +23,26 @@ function zen(node) {
 
     node.state = node.state || {};
 
+    node.watcher = new Proxy(node, {
+        set(node, name, watcher) {
+            node.state["@watchers"] = node.state["@watchers"] || {};
+            node.state["@watchers"][name] = node.state["@watchers"][name] || [];
+            node.state["@watchers"][name].push(watcher);
+            // console.log(node.state["@watchers"][name]);
+        }
+    });
+
+    node.watch = new Proxy(node, {
+        set(node, name, data) {
+            // console.log("watch", node, node.state, name, data);
+            node.state[name] = data;
+            node.state["@watchers"] = node.state["@watchers"] || {};
+            node.state["@watchers"][name] = node.state["@watchers"][name] || [];
+            // console.log(node.state["@watchers"][name]);
+            for (let watcher of node.state["@watchers"][name]) watcher(data, name, state, node);
+        }
+    });
+
     node.state.self = node;
 
     node.defs = node.defs || {};
