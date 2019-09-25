@@ -46,7 +46,11 @@ async function loadComponent(url) {
 
     if (!document.head.querySelector(`[data-ns="${url}"]`)) document.head.append(styleLink);
 
-    const control = inline(view || `<span data-error="true" class="text-danger">${url}</span>`);
+    const control = inline(view || `
+        <div>
+            <span data-error="true">Component ${url} not found</span>
+        </div>
+    `);
 
     control.dataset.url = url;
 
