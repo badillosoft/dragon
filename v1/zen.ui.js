@@ -40,9 +40,9 @@ async function loadComponent(base, name) {
     const styleLink = inline(`<link data-ns="${name}" rel="stylesheet" href="${base}${path}/style.css">`);
 
     // const properties = await requestText(`${base}${path}/properties.html`);
-    const logic = await requestText(`${base}${path}/logic.html`);
+    // const logic = await requestText(`${base}${path}/logic.html`);
 
-    const scripts = inline(`<div>${logic}</div>`);
+    const scripts = inline(`<div>${view}</div>`);
 
     if (!document.head.querySelector(`[data-ns="${name}"]`)) document.head.append(styleLink);
 
