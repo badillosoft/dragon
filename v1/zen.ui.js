@@ -152,8 +152,11 @@ async function loadComponent(url, state = null) {
 
     control.fire.initialize = control;
 
+    if (control.state.initialize) control.state.initialize(control);
+
     if (control.dataset.error) {
         control.fire.error = control;
+        if (control.state.error) control.state.error(control);
     }
 
     return control;
