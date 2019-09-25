@@ -27,18 +27,18 @@ function zen(node) {
 
     node.defs = node.defs || {};
 
-    node.def = new Proxy(node.state, {
-        get(state, name) {
+    node.def = new Proxy(node, {
+        get(node, name) {
             return (node.defs[name] || "").trim().replace(/@:[\w-_.]+/g, w => {
-                return state[w.replace("@:", "")];
+                return node.state[w.replace("@:", "")];
             });
         }
     });
 
-    node.property = new Proxy(node.state, {
-        set(state, name, descriptor) { 
+    node.property = new Proxy(node, {
+        set(node, name, descriptor) { 
             descriptor.configurable = true;
-            Object.defineProperty(state, name, descriptor)
+            Object.defineProperty(node.state, name, descriptor)
         }
     });
 
