@@ -95,7 +95,7 @@ function zen(node) {
 function inline(html) {
     const template = document.createElement("template");
     template.innerHTML = html.trim();
-    const node = document.importNode(template.content, true).firstChild;
+    const node = document.importNode(template.content, true).firstElementChild;
     zen(node);
     return node;
 }
