@@ -54,12 +54,6 @@ async function loadComponent(base, name) {
 
     for (let part of parts) model = model[part];
 
-    const state = await requestJSON(`${base}${path}/state.json`);
-    
-    const defs = await requestJSON(`${base}${path}/translate.json`);
-    
-    define(control.defs, defs);
-
     scripts.querySelectorAll("script").forEach(script => {
         if (script.dataset.property) {
             const name = script.dataset.property;
@@ -113,8 +107,6 @@ async function loadComponent(base, name) {
 
         }
     });
-
-    define(control.state, state);
 
     control.fire.initialize = control;
 
