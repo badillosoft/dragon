@@ -26,29 +26,29 @@ async function waitScript(src) {
     });
 }
 
-async function loadComponent(base, name) {
+async function loadComponent(url) {
     base = base.replace(/\/?$/, () => "/");
 
-    const parts = namespace(name);
+    // const parts = namespace(name);
     // namespace(`${name}.properties`);
     // namespace(`${name}.bindings`);
 
-    const path = parts.join("/");
+    // const path = parts.join("/");
 
-    const view = await requestText(`${base}${path}/view.html`);
+    const view = await requestText(`${url}/view.html`);
     
-    const styleLink = inline(`<link data-ns="${name}" rel="stylesheet" href="${base}${path}/style.css">`);
+    const styleLink = inline(`<link data-ns="${url}" rel="stylesheet" href="${url}/style.css">`);
 
     // const properties = await requestText(`${base}${path}/properties.html`);
     // const logic = await requestText(`${base}${path}/logic.html`);
 
     const scripts = inline(`<div>${view}</div>`);
 
-    if (!document.head.querySelector(`[data-ns="${name}"]`)) document.head.append(styleLink);
+    if (!document.head.querySelector(`[data-ns="${url}"]`)) document.head.append(styleLink);
 
-    const control = inline(view || `<span data-error="true" class="text-danger">${name}</span>`);
+    const control = inline(view || `<span data-error="true" class="text-danger">${url}</span>`);
 
-    control.dataset.name = name;
+    control.dataset.url = url;
 
     let model = window;
 
@@ -117,7 +117,7 @@ async function loadComponent(base, name) {
     return control;
 }
 
-function component(base, name) {
+function component(url) {
     const id = `component-${uuid()}`;
 
     const container = inline(`
@@ -125,7 +125,7 @@ function component(base, name) {
     `);
 
     (async () => {
-        const control = await loadComponent(base, name);
+        const control = await loadComponent(url);
         control.fire.willMount = control;
         while (!container.parentElement) {
             await new Promise(resolve => setTimeout(() => {}, 100));
