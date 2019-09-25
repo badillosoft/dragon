@@ -27,7 +27,7 @@ async function waitScript(src) {
 }
 
 async function loadComponent(url) {
-    base = base.replace(/\/?$/, () => "/");
+    // base = base.replace(/\/?$/, () => "/");
 
     // const parts = namespace(name);
     // namespace(`${name}.properties`);
