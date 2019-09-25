@@ -147,7 +147,7 @@ async function loadComponent(url, state = null) {
         }
         const _component = component(name, state);
         control.ref._control[name] = _component;
-        _component.dataset.id = element.dataset.id;
+        // _component.dataset.id = element.dataset.id;
     });
 
     control.fire.initialize = control;
