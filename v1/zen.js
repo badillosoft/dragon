@@ -11,6 +11,8 @@
 
 { window.dom = {} }
 { window.dom.addons = {} }
+{ zen(window) }
+{ zen(document) }
 { zen(document.body) }
 { zen(document.head) }
 
