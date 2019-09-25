@@ -26,7 +26,7 @@ async function waitScript(src) {
     });
 }
 
-async function loadComponent(url) {
+async function loadComponent(url, state = null) {
     // base = base.replace(/\/?$/, () => "/");
 
     // const parts = namespace(name);
@@ -51,6 +51,11 @@ async function loadComponent(url) {
             <span data-error="true">Component ${url} not found</span>
         </div>
     `);
+
+    if (state) {
+        control.state = state;
+        zen(control);
+    }
 
     control.dataset.url = url;
 
@@ -121,7 +126,7 @@ async function loadComponent(url) {
     return control;
 }
 
-function component(url) {
+function component(url, state = null) {
     const id = `component-${uuid()}`;
 
     const container = inline(`
@@ -129,7 +134,7 @@ function component(url) {
     `);
 
     (async () => {
-        const control = await loadComponent(url);
+        const control = await loadComponent(url, state);
         control.fire.willMount = control;
         while (!container.parentElement) {
             await new Promise(resolve => setTimeout(() => {}, 100));
