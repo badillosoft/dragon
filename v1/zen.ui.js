@@ -50,9 +50,9 @@ async function loadComponent(url) {
 
     control.dataset.url = url;
 
-    let model = window;
+    // let model = window;
 
-    for (let part of parts) model = model[part];
+    // for (let part of parts) model = model[part];
 
     scripts.querySelectorAll("script").forEach(script => {
         if (script.dataset.property) {
