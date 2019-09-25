@@ -30,8 +30,8 @@ async function loadComponent(base, name) {
     base = base.replace(/\/?$/, () => "/");
 
     const parts = namespace(name);
-    namespace(`${name}.properties`);
-    namespace(`${name}.bindings`);
+    // namespace(`${name}.properties`);
+    // namespace(`${name}.bindings`);
 
     const path = parts.join("/");
 
@@ -39,10 +39,10 @@ async function loadComponent(base, name) {
     
     const styleLink = inline(`<link data-ns="${name}" rel="stylesheet" href="${base}${path}/style.css">`);
 
-    const properties = await requestText(`${base}${path}/properties.html`);
-    const events = await requestText(`${base}${path}/events.html`);
+    // const properties = await requestText(`${base}${path}/properties.html`);
+    const logic = await requestText(`${base}${path}/logic.html`);
 
-    const scripts = inline(`<div>${properties} ${events}</div>`);
+    const scripts = inline(`<div>${logic}</div>`);
 
     if (!document.head.querySelector(`[data-ns="${name}"]`)) document.head.append(styleLink);
 
@@ -73,6 +73,12 @@ async function loadComponent(base, name) {
                     const get = callback => property.get = callback;
                     const set = callback => property.set = callback;
 
+                    ${ 
+                        [...control.querySelectorAll("[data-id]")]
+                            .map(element => `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`)
+                            .join("\n")
+                    }
+
                     ${script.textContent}
 
                     return { 
@@ -84,13 +90,27 @@ async function loadComponent(base, name) {
             control.property[name] = descriptor;
         }
         if (script.dataset.bind) {
-            const name = script.dataset.bind;
-            const handler = new Function("control", `
-                return (...params) => (({ state, ref, def, bind, fire }, event, input, ...params) => {
-                    ${script.textContent}
-                })(control, params[0], params[0], ...params);
-            `)(control)
-            control.bind[name] = handler;
+            let sources = script.dataset.source ? 
+                script.dataset.source.split(/\s+/).map(sourceId => control.ref.id[sourceId]) : [control];
+
+            for (let source of sources) {
+                for (let name of script.dataset.bind.split(/\s+/)) {
+                    let handler = new Function("control", "source", `
+                        return (...params) => (({ state, ref, def, bind, fire }, event, input, ...params) => {
+                            ${ 
+                                [...control.querySelectorAll("[data-id]")]
+                                    .map(element => 
+                                        `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`
+                                    ).join("\n")
+                            }
+                            ${script.textContent}
+                        })(control, params[0], params[0], ...params);
+                    `)(control, source);
+                    source.bind[name] = handler;
+                }
+            }
+
+
         }
     });
 
