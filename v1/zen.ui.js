@@ -42,7 +42,7 @@ async function loadComponent(base, name) {
 
     const scripts = inline(`<div>${properties} ${events}</div>`);
 
-    if (!document.head.ref._ns[name]) document.head.append(styleLink);
+    if (!document.head.querySelector(`[data-ns="${name}"]`)) document.head.append(styleLink);
 
     const control = inline(view || `<span data-error="true" class="text-danger">${name}</span>`);
 
