@@ -58,11 +58,6 @@ async function loadComponent(url, state = null) {
     }
     state = control.state;
 
-    const initializeHandler = state.initialize;
-    const errorHandler = state.error;
-    // delete state.initialize;
-    // delete state.error;
-
     control.dataset.url = url;
 
     // let model = window;
@@ -158,11 +153,10 @@ async function loadComponent(url, state = null) {
 
     control.fire.initialize = control;
 
-    if (initializeHandler) initializeHandler(control);
+    if (state.notify) state.notify(state.root, control);
 
     if (control.dataset.error) {
         control.fire.error = control;
-        if (errorHandler) errorHandler(control);
     }
 
     return control;

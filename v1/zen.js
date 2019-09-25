@@ -43,6 +43,7 @@ function zen(node) {
         }
     });
 
+    node.state.root = node.state.root || node;
     node.state.self = node;
 
     node.defs = node.defs || {};
