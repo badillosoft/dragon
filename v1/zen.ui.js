@@ -27,6 +27,8 @@ async function waitScript(src) {
 }
 
 async function loadComponent(base, name) {
+    base = base.replace(/\/?/g, () => "/");
+
     const parts = namespace(name);
     namespace(`${name}.properties`);
     namespace(`${name}.bindings`);
