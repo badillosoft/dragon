@@ -56,6 +56,7 @@ async function loadComponent(url, state = null) {
         control.state = state;
         zen(control);
     }
+    state = control.state;
 
     const initializeHandler = state.initialize;
     const errorHandler = state.error;
