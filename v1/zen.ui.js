@@ -48,7 +48,9 @@ async function loadComponent(url, state = null) {
 
     const control = inline(view || `
         <div>
-            <span data-error="true">Component ${url} not found</span>
+            <span data-error="true">
+                <i class="fas fa-exclamation-triangle"></i> Component <strong>${url}</strong> not found
+            </span>
         </div>
     `);
 
