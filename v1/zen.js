@@ -40,6 +40,7 @@ function zen(node) {
             node.state["@watchers"][name] = node.state["@watchers"][name] || [];
             // console.log(node.state["@watchers"][name]);
             for (let watcher of node.state["@watchers"][name]) watcher(data, name, state, node);
+            node.fire[name] = data;
         }
     });
 
