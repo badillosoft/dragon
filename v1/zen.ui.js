@@ -177,7 +177,12 @@ async function loadComponent(url, state = null) {
             $control.bind.state = newState => {
                 // console.log(`control update state`, name, $control, newState);
                 Object.assign($control.state, newState);
+                if ($control.$initialized) {
+                    $control.fire.update = true;
+                    return;
+                }
                 $control.fire.initialize = true;
+                $control.$initialized = true;
             };
             if (_component.$pendingState) $control.fire.state = _component.$pendingState;
         };
