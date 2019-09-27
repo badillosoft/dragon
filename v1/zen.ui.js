@@ -158,7 +158,7 @@ async function loadComponent(url, state = null) {
         state.notify = $control => {
             console.log(`control`, name, element.dataset.id, $control);
             $control.dataset.id = element.dataset.id;
-            control.ref._tid[element.dataset.id] = $control;
+            // control.ref._tid[element.dataset.id] = $control;
             $control.bind.state$notify = updateState => {
                 console.log(`update control`, name, $control, $control.dataset.id);
                 Object.assign($component.state, updateState);
