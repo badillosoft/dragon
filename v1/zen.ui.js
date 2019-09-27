@@ -1,3 +1,5 @@
+{ window.lookers = [] }
+
 async function requestText(url) {
     const response = await fetch(url);
     if (!response.ok) {
@@ -66,6 +68,8 @@ async function loadComponent(url, state = null) {
 
     // for (let part of parts) model = model[part];
 
+    const fires = [];
+
     scripts.querySelectorAll("script").forEach(script => {
         if (script.dataset.watch) {
             const name = script.dataset.watch;
@@ -73,7 +77,7 @@ async function loadComponent(url, state = null) {
                 return ((control, { state, ref, def, bind, fire, watch }) => {
                     ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
 
-                    return (${name}) => {
+                    return async (${name}) => {
                         ${ 
                             [...control.querySelectorAll("[data-id]")]
                                 .map(element => 
@@ -123,7 +127,9 @@ async function loadComponent(url, state = null) {
             for (let source of sources) {
                 for (let name of script.dataset.bind.split(/\s+/)) {
                     let handler = new Function("control", "source", `
-                        return (...params) => (({ state, ref, def, bind, fire, watch }, event, input, ...params) => {
+                        return (...params) => (async (
+                                { state, ref, def, bind, fire, watch }, event, input, ...params
+                            ) => {
                             ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
 
                             ${ 
@@ -138,7 +144,62 @@ async function loadComponent(url, state = null) {
                     source.bind[name] = handler;
                 }
             }
+            
+        }
+        if (script.dataset.fire) {
+            let sources = script.dataset.source ? script.dataset.source.split(/\s+/) : "";
 
+            for (let source of sources) {
+                for (let name of script.dataset.fire.split(/\s+/)) {
+                    let data = new Function("control", "source", `
+                        return (({ state, ref, def, bind, fire, watch }, event, input, ...params) => {
+                            ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
+
+                            ${ 
+                                [...control.querySelectorAll("[data-id]")]
+                                    .map(element => 
+                                        `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`
+                                    ).join("\n")
+                            }
+                            ${script.textContent}
+                        })(control);
+                    `)(control, source);
+                    fires.push({
+                        source,
+                        name,
+                        data
+                    });
+                }
+            }
+
+        }
+        if (script.dataset.look) {
+            let sources = script.dataset.source ? script.dataset.source.split(/\s+/) : "";
+
+            for (let source of sources) {
+                for (let name of script.dataset.look.split(/\s+/)) {
+                    let handler = new Function("control", "source", `
+                        return (...params) => (async (
+                                { state, ref, def, bind, fire, watch }, event, input, ...params
+                            ) => {
+                            ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
+
+                            ${ 
+                                [...control.querySelectorAll("[data-id]")]
+                                    .map(element => 
+                                        `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`
+                                    ).join("\n")
+                            }
+                            ${script.textContent}
+                        })(control, params[0], params[0], ...params);
+                    `)(control, source);
+                    window.lookers.push({
+                        source,
+                        name,
+                        handler
+                    });
+                }
+            }
 
         }
     });
@@ -189,11 +250,9 @@ async function loadComponent(url, state = null) {
                 }
                 // console.log(`control update state`, name, $control, newState);
                 Object.assign($control.state, newState);
+                element.fire.notify = $control;
                 if (newState.notify) {
                     newState.notify($control);
-                    element.fire.notify = $control;
-                    // _component.fire.notify = $control;
-                    // $control.fire.notify = $control;
                 }
                 if ($control.$initialized) {
                     $control.fire.update = true;
@@ -227,6 +286,11 @@ async function loadComponent(url, state = null) {
 
     control.fire.initialize = control;
 
+    for (let fire of fires) {
+        let { source, name, data } = fire;
+        control.ref.id[source].fire[name] = data;
+    }
+
     if (state.notify) state.notify(state.root, control);
 
     if (control.dataset.error) {
@@ -255,6 +319,13 @@ function component(url, state = null) {
         control.fire.load = control;
         control.fire.update = control;
         container.fire.control = control;
+        for (let look of window.lookers) {
+            const { source, name, handler } = look;
+            if (control.dataset.id === source) {
+                // console.log("control look", control, look);
+                control.bind[name] = handler;
+            }
+        }
     })();
 
     return container;

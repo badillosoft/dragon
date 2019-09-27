@@ -47,7 +47,7 @@ function zen(node) {
             node.state["@watchers"][name] = node.state["@watchers"][name] || [];
             // console.log(node.state["@watchers"][name]);
             for (let watcher of node.state["@watchers"][name]) watcher(data, name, state, node);
-            // node.fire[name] = data;
+            node.fire[name] = data;
         }
     });
 
@@ -65,7 +65,7 @@ function zen(node) {
     });
 
     node.property = new Proxy(node, {
-        set(node, name, descriptor) { 
+        set(node, name, descriptor) {
             descriptor.configurable = true;
             Object.defineProperty(node.state, name, descriptor)
         }
@@ -82,13 +82,17 @@ function zen(node) {
                 handler.call(node, event instanceof CustomEvent ? event.detail : event);
             };
             target.addEventListener(eventName, target.bindings[channel]);
-        },
+        }
     });
 
     node.fire = node.fire || new Proxy(node, {
-        set(target, eventName, event) { target.dispatchEvent(new CustomEvent(eventName, { 
-            detail: event instanceof CustomEvent ? event.detail : event
-        })) },
+        set(node, eventName, event) {
+            const dispatcher = new CustomEvent(eventName, {
+                detail: event instanceof CustomEvent ? event.detail : event
+            });
+            node.dispatchEvent(dispatcher);
+            if (node.state.root && node !== node.state.root) node.state.root.dispatchEvent(dispatcher);
+        }
     });
 
     node.ref = node.ref || new Proxy(node, {
@@ -106,7 +110,7 @@ function zen(node) {
         set(target, selector, element) {
             if (!element) {
                 element = target.ref[selector];
-                if(!element) return;
+                if (!element) return;
                 const parent = zen(element.parentNode);
                 zen(element).fire.remove = { target, parent };
                 element.parentNode.removeChild(element);
