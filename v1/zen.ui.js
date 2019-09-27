@@ -172,17 +172,16 @@ async function loadComponent(url, state = null) {
 
         _component.bind.control = $control => {
             console.log(`control received`, name, _component, $control);
-            _component.$control = $control;
+            if (_component.$pendingState) {
+                const newState = _component.$pendingState
+                console.log(`update state`, name, _component, newState);
+                Object.assign($control.state, newState);
+                $control.fire.initialize = true;
+            }
         };
 
         _component.bind.state = async newState => {
-            while (!_component.$control) {
-                console.warn(`waiting for control`, name, _component);
-                await new Promise(resolve => setTimeout(() => {}, 100));
-            }
-            console.log(`update state`, name, _component, newState);
-            Object.assign(_component.$control.state, newState);
-            _component.$control.fire.initialize = true;
+            _component.$pendingState = newState;
         };
 
         // const _component = component(name, Object.assign(state, {
