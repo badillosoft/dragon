@@ -171,6 +171,7 @@ async function loadComponent(url, state = null) {
         control.ref._control[name] = _component;
 
         _component.bind.control = $control => {
+            _component.$control = $control;
             // console.log(`control received`, name, _component, $control);
             $control.dataset.id = _component.dataset.id;
             $control.bind.state = newState => {
@@ -182,6 +183,10 @@ async function loadComponent(url, state = null) {
         };
 
         _component.bind.state = async newState => {
+            if (_component.$control) {
+                _component.$control = newState;
+                return;
+            }
             _component.$pendingState = newState;
         };
 
