@@ -171,12 +171,13 @@ async function loadComponent(url, state = null) {
         control.ref._control[name] = _component;
 
         _component.bind.control = $control => {
+            if (!$control.dataset.uid) $control.dataset.uid = `uuid-${uuid()}`;
             _component.$control = $control;
             // console.log(`control received`, name, _component, $control);
             $control.dataset.id = _component.dataset.id;
             $control.bind.state = newState => {
                 console.log(`parent`, $control, $control.parentElement);
-                if (!$control.parentElement) {
+                if (!document.body.ref._uid[$control.dataset.uid]) {
                     console.log(`parent removed`, $control, $control.parentElement);
                     return;
                 }
