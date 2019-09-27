@@ -172,12 +172,13 @@ async function loadComponent(url, state = null) {
 
         _component.bind.control = $control => {
             // console.log(`control received`, name, _component, $control);
-            if (_component.$pendingState) {
-                const newState = _component.$pendingState
-                // console.log(`update state`, name, _component, newState);
+            $control.dataset.id = _component.dataset.id;
+            $control.bind.state = newState => {
+                // console.log(`control update state`, name, $control, newState);
                 Object.assign($control.state, newState);
                 $control.fire.initialize = true;
-            }
+            };
+            if (_component.$pendingState) $control.fire.state = _component.$pendingState;
         };
 
         _component.bind.state = async newState => {
