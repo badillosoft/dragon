@@ -173,6 +173,12 @@ async function loadComponent(url, state = null) {
         const _component = component(name, Object.assign(state, {
             notify($control) {
                 console.log(`control`, name, element.dataset.id, $control);
+                $control.dataset.id = element.dataset.id;
+                $control.bind.state$notify = updateState => {
+                    console.log(`update control`, name, $control, $control.dataset.id);
+                    Object.assign($control.state, updateState);
+                    $control.fire.initialize = true;
+                };
             }
         }));
         _component.dataset.tid = element.dataset.id;
