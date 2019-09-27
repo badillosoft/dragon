@@ -154,15 +154,16 @@ async function loadComponent(url, state = null) {
                 state = state[key];
             }
         }
-        const _component = component(name, state);
-        control.ref._control[name] = _component;
-        console.log(`control`, name, element.dataset.id);
-        _component.dataset.id = element.dataset.id;
-        _component.bind.state$notify = updateState => {
-            console.log(`update control`, name, _component, _component.dataset.id);
-            Object.assign(_component.state, updateState);
-            _component.fire.initialize = true;
+
+        state.notify = $control => {
+            console.log(`control`, name, element.dataset.id, $control);
+            $control.dataset.id = element.dataset.id;
+            control.ref._tid[element.dataset.id] = $component;
         };
+        
+        const _component = component(name, state);
+        _component.dataset.tid = element.dataset.id;
+        control.ref._control[name] = _component;
     });
 
     control.fire.initialize = control;
