@@ -217,6 +217,7 @@ function component(url, state = null) {
         control.dataset.component = id;
         control.fire.didMount = control;
         control.fire.load = control;
+        container.fire.control = control;
     })();
 
     return container;
