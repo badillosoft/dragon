@@ -178,6 +178,9 @@ async function loadComponent(url, state = null) {
             $control.bind.state = newState => {
                 console.log(`parent`, $control, $control.parentElement);
                 if (!document.body.ref._uid[$control.dataset.uid]) {
+                    $control.bind.state = () => {
+                        console.warn("control is dead");
+                    };
                     $control.$dead = true;
                     // _component.remove();
                     // $control.remove();
