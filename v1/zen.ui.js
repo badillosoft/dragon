@@ -191,7 +191,8 @@ async function loadComponent(url, state = null) {
                 Object.assign($control.state, newState);
                 if (newState.notify) {
                     newState.notify($control);
-                    _component.fire.notify = $control;
+                    element.fire.notify = $control;
+                    // _component.fire.notify = $control;
                     // $control.fire.notify = $control;
                 }
                 if ($control.$initialized) {
