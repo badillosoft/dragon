@@ -175,6 +175,7 @@ async function loadComponent(url, state = null) {
             // console.log(`control received`, name, _component, $control);
             $control.dataset.id = _component.dataset.id;
             $control.bind.state = newState => {
+                if (!$control.parentElement) return;
                 // console.log(`control update state`, name, $control, newState);
                 Object.assign($control.state, newState);
                 if ($control.$initialized) {
