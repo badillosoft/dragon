@@ -189,7 +189,11 @@ async function loadComponent(url, state = null) {
                 }
                 // console.log(`control update state`, name, $control, newState);
                 Object.assign($control.state, newState);
-                if (newState.notify) newState.notify($control);
+                if (newState.notify) {
+                    newState.notify($control);
+                    _component.fire.notify = $control;
+                    // $control.fire.notify = $control;
+                }
                 if ($control.$initialized) {
                     $control.fire.update = true;
                     return;
