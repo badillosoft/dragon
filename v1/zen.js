@@ -25,6 +25,7 @@ function zen(node) {
 
     node.watcher = new Proxy(node, {
         set(node, name, watcher) {
+            if (node.$dead) return;
             node.state["@watchers"] = node.state["@watchers"] || {};
             node.state["@watchers"][name] = node.state["@watchers"][name] || [];
             node.state["@watchers"][name].push(watcher);
@@ -34,6 +35,7 @@ function zen(node) {
 
     node.watch = new Proxy(node, {
         set(node, name, data) {
+            if (node.$dead) return;
             // console.log("watch", node, node.state, name, data);
             node.state[name] = data;
             node.state["@watchers"] = node.state["@watchers"] || {};
