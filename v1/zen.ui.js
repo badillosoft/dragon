@@ -143,6 +143,8 @@ async function loadComponent(url, state = null) {
         }
     });
 
+    const notifyControls = {};
+
     control.querySelectorAll(`[data-control]`).forEach(element => {
         const name = element.dataset.control;
         let state = null;
@@ -157,6 +159,10 @@ async function loadComponent(url, state = null) {
         const _component = component(name, state);
         control.ref._control[name] = _component;
         _component.dataset.id = element.dataset.id;
+        _component.bind.state$notify = updateState => {
+            Object.assign(_component.state, updateState);
+            _component.fire.initialize = true;
+        };
     });
 
     control.fire.initialize = control;
