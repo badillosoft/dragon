@@ -35,11 +35,11 @@ function zen(node) {
 
     node.watch = new Proxy(node, {
         set(node, name, data) {
-            if (!document.body.ref._component[node.state.self.dataset.component]) {
-                delete node.state["@watchers"];
-                console.warn("node is dead", node);
-                return;
-            }
+            // if (!document.body.ref._component[node.state.self.dataset.component]) {
+            //     delete node.state["@watchers"];
+            //     console.warn("node is dead", node);
+            //     return;
+            // }
             if (node.state.self.$dead) return;
             // console.log("watch", node, node.state, name, data);
             node.state[name] = data;
@@ -47,7 +47,7 @@ function zen(node) {
             node.state["@watchers"][name] = node.state["@watchers"][name] || [];
             // console.log(node.state["@watchers"][name]);
             for (let watcher of node.state["@watchers"][name]) watcher(data, name, state, node);
-            node.fire[name] = data;
+            // node.fire[name] = data;
         }
     });
 
