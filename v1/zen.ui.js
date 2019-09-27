@@ -178,6 +178,7 @@ async function loadComponent(url, state = null) {
             $control.bind.state = newState => {
                 console.log(`parent`, $control, $control.parentElement);
                 if (!document.body.ref._uid[$control.dataset.uid]) {
+                    $control.state = {};
                     _component.remove();
                     $control.remove();
                     console.log(`parent removed`, $control, $control.parentElement);
