@@ -36,6 +36,7 @@ function zen(node) {
     node.watch = new Proxy(node, {
         set(node, name, data) {
             if (!document.body.ref._component[node.dataset.component]) {
+                delete node.state["@watchers"];
                 console.warn("node is dead", node);
                 return;
             }
