@@ -190,7 +190,7 @@ function component(url, state = null) {
             await new Promise(resolve => setTimeout(() => {}, 100));
         }
         zen(container.parentElement).ref._component[id] = control;
-        control.dataset.id = id;
+        control.dataset.component = id;
         control.fire.didMount = control;
         control.fire.load = control;
     })();
