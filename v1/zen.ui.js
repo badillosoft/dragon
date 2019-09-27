@@ -73,13 +73,13 @@ async function loadComponent(url, state = null) {
                 return ((control, { state, ref, def, bind, fire, watch }) => {
                     ${ control.dataset.id ? `const ${control.dataset.id} = control;` : "" }
 
-                    ${ 
-                        [...control.querySelectorAll("[data-id]")]
-                            .map(element => `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`)
-                            .join("\n")
-                    }
-
                     return (${name}) => {
+                        ${ 
+                            [...control.querySelectorAll("[data-id]")]
+                                .map(element => 
+                                    `const ${element.dataset.id} = control.ref.id["${element.dataset.id}"];`
+                                ).join("\n")
+                        }
                         ${script.textContent}
                     };
                 })(control, control);
