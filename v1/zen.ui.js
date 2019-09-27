@@ -170,8 +170,17 @@ async function loadComponent(url, state = null) {
         _component.dataset.id = element.dataset.id;
         control.ref._control[name] = _component;
 
-        _component.bind.state = newState => {
+        _component.bind.control = $control => {
+            _component.$control = $control;
+        };
+
+        _component.bind.state = async newState => {
+            while (!_component.$control) {
+                await new Promise(resolve => setTimeout(() => {}, 100));
+            }
             console.log(`update state`, name, _component, newState);
+            Object.assign(_component.$control.state, newState);
+            _component.$control.fire.initialize = true;
         };
 
         // const _component = component(name, Object.assign(state, {
