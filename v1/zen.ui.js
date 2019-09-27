@@ -183,10 +183,6 @@ async function loadComponent(url, state = null) {
         };
 
         _component.bind.state = async newState => {
-            if (_component.$control) {
-                _component.$control = newState;
-                return;
-            }
             _component.$pendingState = newState;
         };
 
