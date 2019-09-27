@@ -35,6 +35,10 @@ function zen(node) {
 
     node.watch = new Proxy(node, {
         set(node, name, data) {
+            if (!document.body._component[node.dataset.component]) {
+                console.warn("node is dead", node);
+                return;
+            }
             if (node.state.self.$dead) return;
             // console.log("watch", node, node.state, name, data);
             node.state[name] = data;
