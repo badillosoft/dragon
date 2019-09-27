@@ -170,8 +170,8 @@ async function loadComponent(url, state = null) {
         _component.dataset.id = element.dataset.id;
         control.ref._control[name] = _component;
 
-        _control.bind.state = newState => {
-            console.log(`update state`, name, _control, newState);
+        _component.bind.state = newState => {
+            console.log(`update state`, name, _component, newState);
         };
 
         // const _component = component(name, Object.assign(state, {
