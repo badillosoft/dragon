@@ -176,15 +176,15 @@ async function loadComponent(url, state = null) {
             // console.log(`control received`, name, _component, $control);
             $control.dataset.id = _component.dataset.id;
             $control.bind.state = newState => {
-                console.log(`parent`, $control, $control.parentElement);
-                if (!document.body.ref._uid[$control.dataset.uid]) {
+                // console.log(`parent`, $control, $control.parentElement);
+                if (!document.body.querySelector(`[data-uid="${$control.dataset.uid}"]`)) {
+                    $control.$dead = true;
                     $control.bind.state = () => {
                         console.warn("control is dead");
                     };
-                    $control.$dead = true;
                     // _component.remove();
                     // $control.remove();
-                    console.log(`parent removed`, $control, $control.parentElement);
+                    // console.log(`parent removed`, $control, $control.parentElement);
                     return;
                 }
                 // console.log(`control update state`, name, $control, newState);
