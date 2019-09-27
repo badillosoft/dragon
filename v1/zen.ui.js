@@ -171,10 +171,10 @@ async function loadComponent(url, state = null) {
         control.ref._control[name] = _component;
 
         _component.bind.control = $control => {
-            console.log(`control received`, name, _component, $control);
+            // console.log(`control received`, name, _component, $control);
             if (_component.$pendingState) {
                 const newState = _component.$pendingState
-                console.log(`update state`, name, _component, newState);
+                // console.log(`update state`, name, _component, newState);
                 Object.assign($control.state, newState);
                 $control.fire.initialize = true;
             }
