@@ -182,6 +182,7 @@ async function loadComponent(url, state = null) {
                     return;
                 }
                 $control.fire.initialize = true;
+                $control.fire.update = true;
                 $control.$initialized = true;
             };
             if (_component.$pendingState) $control.fire.state = _component.$pendingState;
