@@ -171,11 +171,13 @@ async function loadComponent(url, state = null) {
         control.ref._control[name] = _component;
 
         _component.bind.control = $control => {
+            console.log(`control received`, name, _component, $control);
             _component.$control = $control;
         };
 
         _component.bind.state = async newState => {
             while (!_component.$control) {
+                console.warn(`waiting for control`, name, _component);
                 await new Promise(resolve => setTimeout(() => {}, 100));
             }
             console.log(`update state`, name, _component, newState);
