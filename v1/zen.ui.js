@@ -175,6 +175,7 @@ async function loadComponent(url, state = null) {
             // console.log(`control received`, name, _component, $control);
             $control.dataset.id = _component.dataset.id;
             $control.bind.state = newState => {
+                console.log(`parent`, $control, $control.parentElement);
                 if (!$control.parentElement) {
                     console.log(`parent removed`, $control, $control.parentElement);
                     return;
