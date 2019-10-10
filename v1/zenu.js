@@ -247,7 +247,7 @@ async function zenu_templates(node, control) {
                 const $$controls = [];
                 self.style.transition = "opacity 300ms";
                 self.style.opacity = 0;
-                console.log("${template.dataset.for}");
+                // console.log("${template.dataset.for}");
                 for (${template.dataset.for}) {
                     const $view = await zenu_view(\`${code}\`);
                     const $node = await zenu_node($view);
@@ -263,7 +263,7 @@ async function zenu_templates(node, control) {
                     $control.store.emitFrom = "${emitFrom}";
                     $control.store["${emitFrom}"] = ${emitFrom};
                     $control.store.xref = xref;
-                    console.log("${emitTo}", ${emitTo});
+                    // console.log("${emitTo}", ${emitTo});
                     $control.dispatchEvent(new CustomEvent("${emitTo}", { detail: ${emitFrom} }));
                     // $control.dispatchEvent(new CustomEvent("join", { detail: { index, ${emitFrom}, scope } }));
                     $control.dispatchEvent(new CustomEvent("mount", { detail: self }));
@@ -327,7 +327,14 @@ async function zenu_control(node) {
             let html = await zenu_html(`${prototype}.html`);
             let view = await zenu_view(html);
             let node = await zenu_node(view);
-            [...node.querySelectorAll("script")].forEach(script => control.append(script));
+            [...node.querySelectorAll("script")].forEach(script => {
+                // console.log(meta, prototype, meta !== control, meta.dataset.id);
+                if (meta !== control && meta.dataset.id) {
+                    script.dataset.source = meta.dataset.id;
+                    // console.log(script);
+                }
+                control.append(script);
+            });
         }
     }
 
