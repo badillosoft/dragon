@@ -99,11 +99,16 @@ async function bloku_import(url) {
         }
         template.dataset.url = url;
         document.body.append(template);
+        templates.push(template);
     });
-    // await bloku_register(document.body);
+    for (let template of templates) {
+        let subNode = document.importNode(template.content, true);
+        await bloku_register(subNode);
+    }
 }
 
 async function bloku_register(root) {
+    // console.log("root", root);
     const imports = [];
 
     [...root.childNodes]
