@@ -136,15 +136,30 @@ async function bloku_register(root) {
 
 {
     (async () => {
-        while (document.readyState !== "complete") {
-            // console.warn("wating...");
-            await new Promise(r => setTimeout(r, 100));
-        }
+        console.log("cargando...");
+        const modal = inline(`
+            <div class="d-flex flex-column justify-content-center align-items-center
+                w-100 h-100 position-absolute bg-white">
+                <i class="fas fa-spinner fa-pulse fa-4x"></i>
+            </div>
+        `);
+        document.body.append(modal);
+
+        // while (document.readyState !== "complete") {
+        //     console.warn("wating...");
+        //     await new Promise(r => setTimeout(r, 100));
+        // }
+
         await bloku_register(document.body);
         document.fire.import = "success";
         const main = bloku_template("main");
         document.body.append(main);
         // await bloku_register(main);
         main.notify = document.body;
+        console.log("listo...");
+
+        $(modal).fadeOut(200, () => {
+            modal.remove();
+        });
     })();
 }
