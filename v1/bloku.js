@@ -26,6 +26,17 @@ function bloku_template(name) {
     node.append(defaultScript);
     // console.log(node);
 
+    node.querySelectorAll(`[data-from]`).forEach(element => {
+        const component = bloku_template(element.dataset.from);
+        // console.log("compo", component);
+        for (let key in element.dataset) {
+            if (key === "from") continue;
+            component.dataset[key] = element.dataset[key];
+        }
+        element.parentElement.replaceChild(component, element);
+        component.fire.from = element;
+    });
+
     let control = zen(node.firstElementChild);
     const scripts = [...node.querySelectorAll("script")];
 
@@ -74,6 +85,17 @@ function bloku_template(name) {
             code
         )(control, parent, parent, self, script);
     });
+    
+    control.dataset.url = template.dataset.url;
+
+    control.transfer = (root, mode = "prepend") => {
+        [...control.children].map(zen).forEach(child => {
+            child.fire.transfer = { control, root };
+            root[mode](child);
+        });
+        return control;
+    };
+
     return control;
 }
 
@@ -136,30 +158,11 @@ async function bloku_register(root) {
 
 {
     (async () => {
-        // console.log("cargando...");
-        // const modal = inline(`
-        //     <div class="d-flex flex-column justify-content-center align-items-center
-        //         w-100 h-100 position-absolute bg-white">
-        //         <i class="fas fa-spinner fa-pulse fa-4x"></i>
-        //     </div>
-        // `);
-        // document.body.append(modal);
-
-        // while (document.readyState !== "complete") {
-        //     console.warn("wating...");
-        //     await new Promise(r => setTimeout(r, 100));
-        // }
-
         await bloku_register(document.body);
         document.fire.import = "success";
         const main = bloku_template("main");
         document.body.append(main);
         // await bloku_register(main);
         main.notify = document.body;
-        
-        // console.log("listo...");
-        // $(modal).fadeOut(200, () => {
-        //     modal.remove();
-        // });
     })();
 }

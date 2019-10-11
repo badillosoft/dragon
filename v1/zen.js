@@ -91,7 +91,7 @@ function zen(node) {
                 detail: event instanceof CustomEvent ? event.detail : event
             });
             node.dispatchEvent(dispatcher);
-            if (node.state.root && node !== node.state.root) node.state.root.dispatchEvent(dispatcher);
+            // if (node.state.root && node !== node.state.root) node.state.root.dispatchEvent(dispatcher);
         }
     });
 
